@@ -337,6 +337,13 @@ body.dark-mode .date-weekday {
     color: #ff9ac2;
 }
 
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+}
+
 @keyframes float {
     0% {
         transform: translateY(0px);
