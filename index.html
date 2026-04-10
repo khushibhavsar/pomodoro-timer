@@ -14,44 +14,72 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="main">
-    <div class="top-controls">
-    <button class="music-toggle" onclick="toggleMusic()" aria-label="Toggle music">
-        <span id="music-icon">🎵</span>
-    </button>
+    <div class="container">
 
-    <button class="theme-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-        <span id="theme-icon">🌙</span>
-    </button>
-</div>
+        <div class="main">
+            <!-- left side -->
+            <div class="timer-section">
+                <div class="top-controls">
+                    <button class="music-toggle" onclick="toggleMusic()">🎵</button>
+                    <button class="theme-toggle" onclick="toggleDarkMode()">
+                        <span id="theme-icon">🌙</span>
+                    </button>
+                </div>
 
-    <h1>Pomodoro Timer</h1>
-    <p id="mode-label">Study Time</p>
+                <h1>Pomodoro Timer</h1>
+                <p id="mode-label">Study Time</p>
 
-    <div class="timer-wrapper">
-        <svg class="progress-ring" width="220" height="220">
-            <circle class="progress-ring-bg" cx="110" cy="110" r="95"></circle>
-            <circle class="progress-ring-circle" cx="110" cy="110" r="95"></circle>
-        </svg>
+                <div class="timer-wrapper">
+                    <svg class="progress-ring" width="220" height="220">
+                        <circle class="progress-ring-bg" cx="110" cy="110" r="95"></circle>
+                        <circle class="progress-ring-circle" cx="110" cy="110" r="95"></circle>
+                    </svg>
 
-        <div class="timer-circle" id="timer">25:00</div>
+                    <div class="timer-circle" id="timer">25:00</div>
+                </div>
+
+                <div class="mode-buttons">
+                    <button onclick="setStudyMode()">Study</button>
+                    <button onclick="setBreakMode()">Break</button>
+                </div>
+
+                <div class="control-buttons">
+                    <button onclick="togglePauseResume()">Pause</button>
+                    <button onclick="restartTimer()">Restart</button>
+                    <button onclick="chooseTime()">Choose Time</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- right side -->
+        <div class="right-panel">
+            <div class="todo-container">
+                <h2>To-Do List</h2>
+
+                <input id="task" placeholder="New task">
+                <button onclick="addTask()">Add</button>
+
+                <ul id="list"></ul>
+
+                <button onclick="clearAll()">Clear All</button>
+            </div>
+
+            <div class="date-card">
+                <div class="date-card-top" id="month-name">Month</div>
+                <div class="date-card-body">
+                    <div class="date-number" id="day-number">00</div>
+                    <div class="date-weekday" id="day-name">Day</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="mode-buttons">
-        <button onclick="setStudyMode()">Study</button>
-        <button onclick="setBreakMode()">Break</button>
-    </div>
-
-    <div class="control-buttons">
-        <button onclick="togglePauseResume()">Pause</button>
-        <button onclick="restartTimer()">Restart</button>
-        <button onclick="chooseTime()">Choose Time</button>
-    </div>
-</div>
     <audio id="alarm-sound" src="alarm.mp3" preload="auto"></audio>
     <audio id="background-music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
     <script src="script.js"></script>
 </body>
 </html>

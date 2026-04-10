@@ -1,11 +1,11 @@
-//defining variables
 let timer;
 let minutes = 25;
 let seconds = 0;
 let isPaused = false;
-let enteredTime = null; 
+let enteredTime = null;
 let totalTime = 25 * 60;
 let currentMode = 'study';
+let tasks = [];
 
 const studyMinutes = 25;
 const breakMinutes = 5;
@@ -13,23 +13,25 @@ const breakMinutes = 5;
 const radius = 95;
 const circumference = 2 * Math.PI * radius;
 
-//Function to start the timer
+// starts the countdown
 function startTimer() {
     clearInterval(timer);
     timer = setInterval(updateTimer, 1000);
 }
 
-//Function to update the timerand the progress ring
+// updates timer every second and also updates the ring
 function updateTimer() {
     const timerElement = document.getElementById('timer');
     timerElement.textContent = formatTime(minutes, seconds);
 
     updateProgressRing();
 
+    // when time runs out
     if (minutes == 0 && seconds == 0) {
         clearInterval(timer);
         playAlarmSound();
 
+        // switch between study and break automatically
         if (currentMode === 'study') {
             showNotification('Study session done. Time for a break!');
             alert('Study session done. Time for a break!');
@@ -40,6 +42,7 @@ function updateTimer() {
             setStudyMode();
         }
     } else if (!isPaused) {
+        // normal countdown logic
         if (seconds > 0) {
             seconds--;
         } else {
@@ -49,15 +52,25 @@ function updateTimer() {
     }
 }
 
-//Function to format time
+// makes the timer always look like 05:09 instead of 5:9
 function formatTime(minutes, seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
-//Function to Pause/Resume
+// just so I don’t keep rewriting the same selector
+function getPauseButton() {
+    return document.querySelector('.control-buttons button');
+}
+
+// resets the timer text + button text together
+function resetTimerDisplay() {
+    document.getElementById('timer').textContent = formatTime(minutes, seconds);
+    getPauseButton().textContent = 'Pause';
+}
+
+// pause if running, resume if paused
 function togglePauseResume() {
-    const pauseResumeButton = 
-        document.querySelector('.control-buttons button');
+    const pauseResumeButton = getPauseButton();
     isPaused = !isPaused;
 
     if (isPaused) {
@@ -69,7 +82,7 @@ function togglePauseResume() {
     }
 }
 
-//Function to restart the timer
+// restarts timer based on current mode or chosen time
 function restartTimer() {
     clearInterval(timer);
 
@@ -87,22 +100,15 @@ function restartTimer() {
     seconds = 0;
     isPaused = false;
 
-    const timerElement = 
-        document.getElementById('timer');
-    timerElement.textContent = 
-        formatTime(minutes, seconds);
-
-    const pauseResumeButton = 
-        document.querySelector('.control-buttons button');
-    pauseResumeButton.textContent = 'Pause';
-
+    resetTimerDisplay();
     updateProgressRing();
     startTimer();
 }
 
-//Function to choose the time
+// lets user type in their own timer length
 function chooseTime() {
     const newTime = prompt('Enter new time in minutes:');
+
     if (!isNaN(newTime) && newTime > 0) {
         enteredTime = parseInt(newTime);
         minutes = enteredTime;
@@ -110,26 +116,16 @@ function chooseTime() {
         totalTime = enteredTime * 60;
         isPaused = false;
 
-        const timerElement =
-            document.getElementById('timer');
-        timerElement.textContent =
-            formatTime(minutes, seconds);
-
         clearInterval(timer);
-
-        const pauseResumeButton =
-            document.querySelector('.control-buttons button');
-        pauseResumeButton.textContent = 'Pause';
-
+        resetTimerDisplay();
         updateProgressRing();
         startTimer();
     } else {
-        alert('Invalid input. Please enter' +
-              ' a valid number greater than 0.');
+        alert('Invalid input. Please enter a valid number greater than 0.');
     }
 }
 
-//Function to set study mode
+// switches timer to study mode
 function setStudyMode() {
     currentMode = 'study';
     enteredTime = null;
@@ -139,18 +135,14 @@ function setStudyMode() {
     isPaused = false;
 
     document.getElementById('mode-label').textContent = 'Study Time';
-    document.getElementById('timer').textContent = formatTime(minutes, seconds);
-
-    const pauseResumeButton =
-        document.querySelector('.control-buttons button');
-    pauseResumeButton.textContent = 'Pause';
 
     clearInterval(timer);
+    resetTimerDisplay();
     updateProgressRing();
     startTimer();
 }
 
-//Function to set break mode
+// switches timer to break mode
 function setBreakMode() {
     currentMode = 'break';
     enteredTime = null;
@@ -160,18 +152,14 @@ function setBreakMode() {
     isPaused = false;
 
     document.getElementById('mode-label').textContent = 'Break Time';
-    document.getElementById('timer').textContent = formatTime(minutes, seconds);
-
-    const pauseResumeButton =
-        document.querySelector('.control-buttons button');
-    pauseResumeButton.textContent = 'Pause';
 
     clearInterval(timer);
+    resetTimerDisplay();
     updateProgressRing();
     startTimer();
 }
 
-//Function to update the circular progress ring
+// updates the pink progress circle around the timer
 function updateProgressRing() {
     const circle = document.querySelector('.progress-ring-circle');
     const timeLeft = minutes * 60 + seconds;
@@ -181,7 +169,7 @@ function updateProgressRing() {
     circle.style.strokeDashoffset = circumference * (1 - progress);
 }
 
-//Function to toggle dark mode
+// dark mode toggle
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
 
@@ -197,7 +185,7 @@ function toggleDarkMode() {
     }
 }
 
-//Function to load saved theme
+// remembers theme even after refresh
 function loadTheme() {
     const savedTheme = localStorage.getItem('theme');
     const themeIcon = document.getElementById('theme-icon');
@@ -210,37 +198,37 @@ function loadTheme() {
     }
 }
 
-//Function to play the alarm sound
+// plays alarm when timer ends
 function playAlarmSound() {
     const alarmSound = document.getElementById('alarm-sound');
     alarmSound.currentTime = 0;
     alarmSound.play();
 }
 
-//Function to request notification permission
+// asks user for notification permission
 function requestNotificationPermission() {
-    if ("Notification" in window && Notification.permission !== "granted") {
+    if ('Notification' in window && Notification.permission !== 'granted') {
         Notification.requestPermission();
     }
 }
 
-//Function to show browser notification
+// sends browser notification
 function showNotification(message) {
-    if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("Pomodoro Timer", {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('Pomodoro Timer', {
             body: message,
         });
     }
 }
 
-//Function to play background music
+// background music settings
 function playBackgroundMusic() {
     const music = document.getElementById('background-music');
     music.volume = 0.3;
     music.play();
 }
 
-//Function to toggle background music
+// play/pause music button
 function toggleMusic() {
     const music = document.getElementById('background-music');
 
@@ -251,15 +239,69 @@ function toggleMusic() {
     }
 }
 
-//adding a slight transition
-document.body.style.transition = "background 0.5s";
+// just adding a small smooth transition
+document.body.style.transition = 'background 0.5s';
 
-//remove the bock autoplay
+// browser blocks autoplay sometimes so this starts music after first click
 document.addEventListener('click', function () {
     playBackgroundMusic();
 }, { once: true });
 
+// add a task to the list
+function addTask() {
+    let input = document.getElementById('task');
+
+    if (input.value === '') return;
+
+    tasks.push(input.value);
+    input.value = '';
+    displayTasks();
+}
+
+// remove one task
+function removeTask(i) {
+    tasks.splice(i, 1);
+    displayTasks();
+}
+
+// clears everything from the list
+function clearAll() {
+    tasks = [];
+    displayTasks();
+}
+
+// redraws the to-do list each time something changes
+function displayTasks() {
+    let list = document.getElementById('list');
+    list.innerHTML = '';
+
+    for (let i = 0; i < tasks.length; i++) {
+        list.innerHTML += `<li>${tasks[i]} <button onclick="removeTask(${i})">❌</button></li>`;
+    }
+}
+
+// shows today's date on the date card
+function showCurrentDate() {
+    const today = new Date();
+
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const days = [
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday',
+        'Thursday', 'Friday', 'Saturday'
+    ];
+
+    document.getElementById('month-name').textContent = months[today.getMonth()];
+    document.getElementById('day-number').textContent = today.getDate();
+    document.getElementById('day-name').textContent = days[today.getDay()];
+}
+
+// page setup stuff
 loadTheme();
 updateProgressRing();
 requestNotificationPermission();
+showCurrentDate();
 startTimer();
