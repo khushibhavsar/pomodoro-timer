@@ -123,26 +123,4 @@ function resetTimer() {
       }
 
 
-// background music settings
-function playBackgroundMusic() {
-    const music = document.getElementById('background-music');
-    music.volume = 0.3;
-    music.play();
-}
-
-// play/pause music button
-function toggleMusic() {
-    const music = document.getElementById('background-music');
-
-    if (music.paused) {
-        music.play();
-    } else {
-        music.pause();
-    }
-}
-
-document.addEventListener('click', function () {
-    playBackgroundMusic();
-}, { once: true });
-
 setProgressInfo();
