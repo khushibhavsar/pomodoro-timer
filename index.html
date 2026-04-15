@@ -1,85 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-</head>
-<body>
+    </head>
+  <body>
     <div class="container">
-
-        <div class="main">
-            <!-- left side -->
-            <div class="timer-section">
-                <div class="top-controls">
-                    <button class="music-toggle" onclick="toggleMusic()">🎵</button>
-                    <button class="theme-toggle" onclick="toggleDarkMode()">
-                        <span id="theme-icon">🌙</span>
-                    </button>
-                </div>
-
-                <h1>Pomodoro Timer</h1>
-                <p id="mode-label">Study Time</p>
-
-                <div class="timer-wrapper">
-                    <svg class="progress-ring" width="220" height="220">
-                        <circle class="progress-ring-bg" cx="110" cy="110" r="95"></circle>
-                        <circle class="progress-ring-circle" cx="110" cy="110" r="95"></circle>
-                    </svg>
-
-                    <div class="timer-circle" id="timer">25:00</div>
-                </div>
-
-                <div class="mode-buttons">
-                    <button onclick="setStudyMode()">Study</button>
-                    <button onclick="setBreakMode()">Break</button>
-                </div>
-
-                <div class="control-buttons">
-                    <button onclick="togglePauseResume()">Pause</button>
-                    <button onclick="restartTimer()">Restart</button>
-                    <button onclick="chooseTime()">Choose Time</button>
-                </div>
-            </div>
+          <h1>Pomodoro Timer</h1>
+      <div class="timer-container">
+        <button id="pomodorobtn" class="active">Pomodoro</button>
+        <button id="shortbrkbtn">Shortbreak</button>
+        <button id="longbrkbtn">Long break</button>
+      </div>
+      <div class="pomdoro-count"></div>
+      <div class="progressbar">
+        <div class="progrsbar-inner">
+          <h2 class="progressbar-number">25:00</h2>
         </div>
-
-        <!-- right side -->
-        <div class="right-panel">
-            <div class="todo-container">
-                <h2>To-Do List</h2>
-
-                <input id="task" placeholder="New task">
-                <button onclick="addTask()">Add</button>
-
-                <ul id="list"></ul>
-
-                <button onclick="clearAll()">Clear All</button>
-            </div>
-
-            <div class="date-card">
-                <div class="date-card-top" id="month-name">Month</div>
-                <div class="date-card-body">
-                    <div class="date-number" id="day-number">00</div>
-                    <div class="date-weekday" id="day-name">Day</div>
-                </div>
-            </div>
-        </div>
-
+      </div>
+      <div class="function-buttons">
+        <button id="startbtn">Start</button>
+        <button id="pausebtn">Pause</button>
+        <button id="resetbtn">Reset</button>
+               <button class="music-toggle" onclick="toggleMusic()">🎵</button>
+      </div>
+      
     </div>
-
-    <audio id="alarm-sound" src="alarm.mp3" preload="auto"></audio>
     <audio id="background-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
-
-    <script src="script.js"></script>
+       <script src="script.js"></script>
 </body>
 </html>
+
